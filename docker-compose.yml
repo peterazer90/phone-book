@@ -1,0 +1,31 @@
+version: '3'
+services:
+  postgres:
+    image: postgres:12.1
+    restart: always
+    ports:
+      - "5432:5432"
+    environment:
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=P@ssw0rd123
+      - POSTGRES_DB=phone_book
+    volumes:
+      - ./postgresql/data:/var/lib/postgresql/data
+  service:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    volumes:
+      - /app/node_modules
+      - ./backend:/app
+    ports:
+      - "3001:3001"
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: dockerfile
+    volumes:
+      - /app/node_modules
+      - ./frontend:/app
+    ports:
+      - "3000:3000"
